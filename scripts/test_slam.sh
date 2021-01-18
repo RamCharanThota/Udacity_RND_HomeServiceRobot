@@ -1,6 +1,6 @@
 #!/bin/sh
 
-xterm  -e  " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$(rospack find gmapping)/../../map/uhome.world"&
+xterm  -e  " roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$(rospack find gmapping)/../../map/shome.world"&
 sleep 5
 xterm  -e  " roslaunch turtlebot_gazebo gmapping_demo.launch" & 
 sleep 5
