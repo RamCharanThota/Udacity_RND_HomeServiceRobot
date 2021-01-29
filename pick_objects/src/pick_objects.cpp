@@ -4,6 +4,8 @@
 
 // Define a client for to send goal requests to the move_base server through a SimpleActionClient
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+float pick_up_positon[3]={5,3,1};
+float drop_off_positon[3]={2.5,2,1};
 
 int main(int argc, char** argv){
   // Initialize the simple_navigation_goals node
@@ -24,8 +26,9 @@ int main(int argc, char** argv){
   goal.target_pose.header.stamp = ros::Time::now();
 
   // Define a position and orientation for the robot to reach
-  goal.target_pose.pose.position.x = 1.0;
-  goal.target_pose.pose.orientation.w = 1.0;
+  goal.target_pose.pose.position.x =  pick_up_positon[0];
+  goal.target_pose.pose.position.y =  pick_up_positon[1];
+  goal.target_pose.pose.orientation.w =  pick_up_positon[2];
 
    // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending goal");
@@ -36,14 +39,14 @@ int main(int argc, char** argv){
 
   // Check if the robot reached its goal
   if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
+{
     ROS_INFO("Hooray, the robot reached pickup goal");
-  else
-    ROS_INFO("The base failed to move forward 1 meter for some reason");
-  ac.waitForResult(ros::Duration(5.0));
+    ros::Duration(5.0).sleep();
 
 // Define a position and orientation for the robot to reach
-  goal.target_pose.pose.position.x = 0.0;
-  goal.target_pose.pose.orientation.w = 1.0;
+  goal.target_pose.pose.position.x = drop_off_positon[0];
+  goal.target_pose.pose.position.y = drop_off_positon[1];
+  goal.target_pose.pose.orientation.w = drop_off_positon[2];
 
    // Send the goal position and orientation for the robot to reach
   ROS_INFO("Sending goal");
@@ -53,11 +56,20 @@ int main(int argc, char** argv){
   ac.waitForResult();
 
   // Check if the robot reached its goal
-  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED)
-    ROS_INFO("Hooray, the robot reached dropoff goal");
+  if(ac.getState() == actionlib::SimpleClientGoalState::SUCCEEDED){
+    ROS_INFO("Hooray, the robot reached dropoff goal");}
   else
+{
     ROS_INFO("The base failed to move forward 1 meter for some reason");
-   ac.waitForResult(ros::Duration(5.0));
+}
+}
+  else
+{
+    ROS_INFO("The base failed to move forward 1 meter for some reason");
+ 
+}
+
+   
 
 
   return 0;
