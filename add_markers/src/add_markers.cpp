@@ -113,9 +113,12 @@ state=hide;
  marker.action = visualization_msgs::Marker::DELETE;// hide the marker
 marker_pub.publish(marker);
 if(at_drop_off_position){
+sleep(2);
 state=drop;
 }
+
 }else if(state==drop) {
+
 marker.action = visualization_msgs::Marker::ADD;// add the marker
 marker.pose.position.x = drop_off_position[0];
 marker.pose.position.y =drop_off_position[1];
