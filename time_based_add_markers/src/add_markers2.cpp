@@ -3,35 +3,8 @@
 #include <visualization_msgs/Marker.h>
 #include "nav_msgs/Odometry.h"
 
-float pick_up_position[3]={5,3,1};
-float drop_off_position[3]={2.5,2,1};
-
-bool at_pick_up_position= false;
-bool at_drop_off_position=false ;
 
 
-
-
-void CallbackFunction(const nav_msgs::Odometry::ConstPtr& msgs)
-{ 
-
-if (std::abs(msgs->pose.pose.position.x-pick_up_position[0])<0.3 && std::abs(msgs->pose.pose.position.y-pick_up_position[1])<0.3  ){
-
-at_pick_up_position= true;
-
-}
-
-if (std::abs(msgs->pose.pose.position.x-drop_off_position[0])<0.2 && std::abs(msgs->pose.pose.position.y-drop_off_position[1])<0.2){
-
-at_drop_off_position=true;
-
-}
-
-
- 
-
-
-}
 
 
 
@@ -44,13 +17,16 @@ int main( int argc, char** argv )
   ros::NodeHandle n;
   ros::Rate r(1);
   ros::Publisher marker_pub = n.advertise<visualization_msgs::Marker>("visualization_marker", 1);
-ros::Subscriber odometry_sub = n.subscribe("odom", 100,CallbackFunction);
+   float pick_up_position[3]={5,3,1};
+float drop_off_position[3]={2.5,2,1};
+
+enum State {pickup,hide,drop} state;
+state=pickup;
+
 
 
 
   uint32_t shape = visualization_msgs::Marker::CUBE;
-  enum State{pick,hide,drop}state;
-state=pick;
 
   while (ros::ok())
   {
@@ -75,10 +51,13 @@ state=pick;
     marker.action = visualization_msgs::Marker::ADD;
 
     // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
-    marker.pose.position.x = 0;
+marker.pose.position.x = 0;
     marker.pose.position.y = 0;
-    marker.pose.orientation.w =0;
-// %EndTag(POSE)%
+    marker.pose.position.z = 0;
+    marker.pose.orientation.x = 0.0;
+    marker.pose.orientation.y = 0.0;
+    marker.pose.orientation.z = 0.0;
+    marker.pose.orientation.w = 1.0;
 
     // Set the scale of the marker -- 1x1x1 here means 1m on a side
 // %Tag(SCALE)%
@@ -97,35 +76,44 @@ state=pick;
 
 // %Tag(LIFETIME)%
     marker.lifetime = ros::Duration();
-    ros::spinOnce();
+// %EndTag(LIFETIME)%
 
- if (state==pick){
+    // Publish the marker
+// %Tag(PUBLISH)%
+    while (marker_pub.getNumSubscribers() < 1)
+    {
+      if (!ros::ok())
+      {
+        return 0;
+      }
+      ROS_WARN_ONCE("Please create a subscriber to the marker");
+      sleep(1);
+    }
+
+if(state==pickup){
 marker.action = visualization_msgs::Marker::ADD;
- marker.pose.position.x = pick_up_position[0];
-    marker.pose.position.y = pick_up_position[1];
-    marker.pose.orientation.w = pick_up_position[2]; 
-    marker_pub.publish(marker);
-if (at_pick_up_position){
-sleep(5);
+      marker.pose.position.x = pick_up_position[0];
+      marker.pose.position.y = pick_up_position[1];
+      marker_pub.publish(marker);
+   sleep(5.0); 
 state=hide;
-}
 }else if (state==hide){
- marker.action = visualization_msgs::Marker::DELETE;// hide the marker
-marker_pub.publish(marker);
-if(at_drop_off_position){
+marker.action = visualization_msgs::Marker::DELETE;// hide the marker
+  marker_pub.publish(marker);
+sleep(5.0);
 state=drop;
-}
-}else if(state==drop) {
+
+} else{
+
 marker.action = visualization_msgs::Marker::ADD;// add the marker
 marker.pose.position.x = drop_off_position[0];
 marker.pose.position.y =drop_off_position[1];
-marker.pose.orientation.w = drop_off_position[2];
 marker_pub.publish(marker);
+
 }
+ 
 
-
-    
-
+ 
 
 
 
