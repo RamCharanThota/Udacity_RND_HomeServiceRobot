@@ -63,10 +63,10 @@ To consolidate the robotic concepts learned in the Udacity Robotics Nanodegree a
      $ ./home_service.sh
      
 #### Results
-![Gazebo simulated World Isometric view](gazebo_isometric_view.png)
-![Gazebo simulated World Top view](gazebo_top_view.png)
-![Generated map of the world using slam](mapped_world.png)
-![robot at drop off position](robot_drop_off_position.png)
+![Gazebo simulated World Isometric view](Images/gazebo_isometric_view.png)
+![Gazebo simulated World Top view](Images/gazebo_top_view.png)
+![Generated map of the world using slam](Images/mapped_world.png)
+![robot at drop off position](Images/robot_drop_off_position.png)
 
 
 
