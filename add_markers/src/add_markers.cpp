@@ -13,13 +13,13 @@ bool at_drop_off_position=false ;
 void CallbackFunction(const nav_msgs::Odometry::ConstPtr& msgs)
 { 
 
-if (std::abs(msgs->pose.pose.position.x-pick_up_position[0])<0.25 && std::abs(msgs->pose.pose.position.y-pick_up_position[1])<0.25 ){
+if (std::abs(msgs->pose.pose.position.x-pick_up_position[0])<0.20 && std::abs(msgs->pose.pose.position.y-pick_up_position[1])<0.20  ){
 
 at_pick_up_position= true;
 
 }
 
-if (std::abs(msgs->pose.pose.position.x-drop_off_position[0])<0.2 && std::abs(msgs->pose.pose.position.y-drop_off_position[1])<0.2 ){
+if (std::abs(msgs->pose.pose.position.x-drop_off_position[0])<0.20 && std::abs(msgs->pose.pose.position.y-drop_off_position[1])<0.20){
 
 at_drop_off_position=true;
 
@@ -113,40 +113,32 @@ while(!at_pick_up_position)
     ros::spinOnce();
    }
 
+bool picked_up_marker=false;
 
-
-if (at_pick_up_position){
+if (at_pick_up_position && !picked_up_marker){
 marker.action = visualization_msgs::Marker::DELETE;// hide the marker
 marker_pub.publish(marker);
+picked_up_marker= true;
 }
 
 while(!at_drop_off_position)
    {
     ros::spinOnce();
    }
+
+bool drop_off_marker=false;
  
-if(at_drop_off_position){
-
+if(at_drop_off_position && !drop_off_marker){
 marker.action = visualization_msgs::Marker::ADD;// add the marker
-
 marker.pose.position.x = drop_off_position[0];
-    marker.pose.position.y =drop_off_position[1];
-    marker.pose.orientation.w = drop_off_position[2];
-
+marker.pose.position.y =drop_off_position[1];
+marker.pose.orientation.w = drop_off_position[2];
 marker_pub.publish(marker);
+drop_off_marker= true;
 ros::Duration(10.0).sleep(); // Sleep for 10 second
 }
 
-
-
-
-
-
-
-
-
-    
-  }
+}
 
 }
 
