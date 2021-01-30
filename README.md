@@ -1,19 +1,21 @@
-# Udacity Robotic Software NanoDegree
+# Udacity Robotic Software NanoDegree Final Project
 ## Home Service Robot
 
 ![](Images/Home_service_robot_final.gif)
 
 ### Introduction
-The main objective of this project is to learn to utilize the _ROS AMCL(Adaptive Monte Carlo Localisation)_ package to accurately localize a mobile robot inside a map in the _Gazebo_ simulation environment.and To learn several aspects of robotic software engineering with a focus on ROS:
+The goal of this project is to program a robot that can autonomously map an environment and navigate to pick and drop virtual objects.The tasks involved in the project are as follows:
 
-*Create a ROS package that launches a custom robot model in a custom Gazebo world
+* Design and build simple simulation world with Gazebo Building Editor
+* Genereate the map of the environement by using gmapping SLAM package
+* Use the ROS navigation stack and command the robot to go to different desired positions using 2D Nav Goal
+* create C++ node named 'pick_objects' that drives the robot to specified pickup and dropoff zones
+* create  C++ node name add_markers that keeps track of robot pose by subscribing to robot odometry and publishes markers to rviz at specific locations and time. 
 
-*Utilize the ROS AMCL package and the Tele-Operation / Navigation Stack to localize the robot
-
-*Explore, add, and tune specific parameters corresponding to each package to achieve the best possible localization results
 
 ### Motivation
-To consolidate the robotic concepts learned in the Udacity Robotics Nanodegree and get a hands-on experience of working with _C++, ROS, Gazebo simulation enviroment_.
+To consolidate the robotic concepts learned in the Udacity Robotics Nanodegree and get a hands-on experience of working with _C++, ROS, Gazebo simulation enviroment_. To be specific, it is mainly test and improve _ROS_ abilities and skills to setting and fine tune parameters,communicating between different nodes of different packages, creating C++ nodes, publising and subscribing to different topics and writing launch files.
+
  
       
 ### Prerequisites and Dependencies
@@ -22,16 +24,17 @@ To consolidate the robotic concepts learned in the Udacity Robotics Nanodegree a
 
 #### 2. Cmake>=3.0 and gcc/g++>=5.4
 
-#### 3.ROS Navigation Package
-      sudo apt-get install ros-kinetic-navigation
-       
-#### 4.ROS map_server package  
-       sudo apt-get install ros-kinetic-map-server 
-#### 5.ROS move_base package
-       sudo apt-get install ros-kinetic-move-base
-#### 6.ROS amcl package
-       sudo apt-get install ros-kinetic-amcl
-                
+#### 3. following ros packages are used for this project and process of installing them are detailed below
+  1. [gmapping](http://wiki.ros.org/gmapping)
+  The gmapping package provides laser-based slam, as a ROS node called slam_gmapping. slam_gmapping is used to create 2-D occupancy grid map of the environment from laser and pose data collected by mobile robot. In this project,it is used to generate map of the simulated Gazebo world.With the gmapping_demo.launch file, you can easily perform SLAM and build a map of the environment with a robot equipped with laser range finder sensors or RGB-D cameras.
+  2. [turtlebot_teleop] (http://wiki.ros.org/turtlebot_teleop)
+   With the keyboard_teleop.launch file, you can manually control a robot using keyboard commands.
+  3. [turtlebot_rviz_launchers](http://wiki.ros.org/turtlebot_rviz_launchers)
+  With the view_navigation.launch file, you can load a preconfigured rviz workspace. You’ll save a lot of time by launching this file, because it will automatically load the robot model, trajectories, and map for you.
+  4. [turtlebot_gazebo](http://wiki.ros.org/turtlebot_gazebo)
+  With the turtlebot_world.launch you can deploy a turtlebot in a gazebo environment by linking the world file to it.
+   
+        
 
 ### Build and Run the project
 
