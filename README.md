@@ -64,7 +64,7 @@ To consolidate the robotic concepts learned in the Udacity Robotics Nanodegree a
      
 #### Results
 ![Gazebo simulated World Isometric view](Images/gazebo_isometric_view.png)
-![Gazebo simulated World Top view](Images/gazebo_top_view.png)
+![Gazebo simulated World Top view](Images/gazebo_world_top_view.png)
 ![Generated map of the world using slam](Images/mapped_world.png)
 ![robot at drop off position](Images/robot_drop_off_position.png)
 
